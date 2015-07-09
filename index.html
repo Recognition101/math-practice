@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Math Practice</title>
+        <style>
+            .problem {
+                position: relative;
+            }
+            .fraction, .equals {
+                display: inline-block;
+            }
+
+            .fraction div:first-child {
+                border-bottom: 1px solid black;
+            }
+
+            .fraction {
+                margin: 10px;
+            }
+
+            .equals {
+                position: absolute;
+                top: 50%;
+                margin-left: -5px;
+                margin-top: -10px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="choices" id="choices">
+            <button id="choice1"></button>
+            <button id="choice2"></button>
+            <button id="choice3"></button>
+            <button id="choice4"></button>
+        </div>
+
+        <div class="problem">
+
+            <div class="fraction" id="fraction1">
+                <div id="fraction1-numerator">x</div>
+                <div id="fraction1-denominator">9</div>
+            </div>
+
+            <div class="equals">=</div>
+
+            <div class="fraction" id="fraction2">
+                <div id="fraction2-numerator">10</div>
+                <div id="fraction2-denominator">11</div>
+            </div>
+
+        </div>
+
+        <div>
+            Score: <span id="score">0</span>
+        </div>
+
+
+        <script>
+            var num1 = 0;
+            var num2 = 0;
+            var num3 = 0;
+            var xPos = 0;
+            var ans  = 0;
+            var ansC = 0;
+            var score = 0;
+
+            var domF1Num = document.getElementById('fraction1-numerator');
+            var domF1Den = document.getElementById('fraction1-denominator');
+            var domF2Num = document.getElementById('fraction2-numerator');
+            var domF2Den = document.getElementById('fraction2-denominator');
+
+            var domChoices = document.getElementById('choices');
+            var domScore   = document.getElementById('score');
+
+            var domC1 = document.getElementById('choice1');
+            var domC2 = document.getElementById('choice2');
+            var domC3 = document.getElementById('choice3');
+            var domC4 = document.getElementById('choice4');
+
+            var setupState = function setupState() {
+                num1 = Math.round(Math.random() * 100) + 1;
+                num2 = Math.round(Math.random() * 100) + 1;
+                num3 = Math.round(Math.random() * 100) + 1;
+                xPos = Math.floor(Math.random() * 4);
+
+                domF1Num.innerHTML = xPos === 0 ? 'x' : num1;
+                domF1Den.innerHTML = xPos < 1   ? num1 :
+                                     xPos === 1 ? 'x' :  num2;
+                domF2Num.innerHTML = xPos < 2   ? num2 :
+                                     xPos === 2 ? 'x' : num3;
+                domF2Den.innerHTML = xPos === 3 ? 'x' : num3;
+
+                ans = xPos === 0 ? (num2 * num1) / num3 :
+                      xPos === 1 ? (num1 * num3) / num2 :
+                      xPos === 2 ? (num1 * num3) / num2 :
+                      xPos === 3 ? (num3 * num2) / num1 : -1;
+                ans = Math.round(ans * 10) / 10;
+
+                ansC  = Math.floor(Math.random() * 4);
+
+                domC1.innerHTML = ansC === 0 ? ans : Math.round(Math.random() * 1000) / 10;
+                domC2.innerHTML = ansC === 1 ? ans : Math.round(Math.random() * 1000) / 10;
+                domC3.innerHTML = ansC === 2 ? ans : Math.round(Math.random() * 1000) / 10;
+                domC4.innerHTML = ansC === 3 ? ans : Math.round(Math.random() * 1000) / 10;
+            };
+
+            domChoices.addEventListener('click', function(ev) {
+                if (ev.target.tagName.toLowerCase() === 'choices') {
+                    return;
+                }
+
+                if (ev.target.id === 'choice' + (ansC + 1)) {
+                    score += 1;
+                }
+
+                setupState();
+                domScore.innerHTML = score;
+            });
+
+            setupState();
+
+        </script>
+    </body>
+</html>
